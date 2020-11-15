@@ -6,5 +6,4 @@ SUM
 BIN
 BOT
 DSP
-FLT
 JMP

@@ -7,8 +7,8 @@ translator = {  "NOP": "00000000",
                 "AIN": "10000000",
                 "BIN": "10000001",
                 "JMP": "10000010",
-                "JPE": "10000101",
-                "JPC": "10000100",
+                "JPE": "10000101",#unkown if this works
+                "JPC": "10000100",#unkown if this works
                 "DSP": "10000011",
                 "JBI": "10000110",
 
@@ -25,10 +25,13 @@ translator = {  "NOP": "00000000",
                 "ORR": "11111011",
                 "LSH": "11011100",
 
+                "MEO":"00110001",
+                "MEN":"00110000",
+                "SMA":"00100000"
+
 }
 
-literal_translator = {  "MNI": "0001",
-                        "MNO":"0010",}
+literal_translator = {  "STC": "0001"}
 
 
 try:
@@ -42,7 +45,7 @@ assembled = []
 try:
     for i in program:
         if(i[0:3].upper() in literal_translator):
-            assembled.append(literal_translator[i[0:3].upper()] + i[5:8])
+            assembled.append(literal_translator[i[0:3].upper()] + i[4:8])
         else:
             assembled.append(translator[i[0:3].upper()]) # this needs to be imporved
     print(assembled)
