@@ -80,13 +80,13 @@ with open('MC_Upload.ahk', 'w',encoding='utf-8-sig') as f:
     f.write("^p::\nSend t\nsleep,200\n")
     for item in mcAssembly:
         f.write("%s\nsleep, 200\nSend t\nsleep, 200\n" % item)
-    f.write("^r::\nSend t\nsleep,200\n"")
-    f.write("Send /setblock 369 57 439 minecraft:powered_repeater 0 \nsleep,200\nSend t\nsleep,200\n)
-    f.write("Send /setblock 373 57 439 minecraft:powered_repeater 0 \nsleep,200\nSend t\nsleep,200\n)
-    f.write("Send /setblock 378 57 439 minecraft:powered_repeater 0 \nsleep,200\nSend t\nsleep,200\n)
-    f.write("Send /setblock 382 57 439 minecraft:powered_repeater 0\nsleep,200\nSend t\nsleep,200\n)
-    f.write("Send /setblock 387 57 439 minecraft:powered_repeater 0\nsleep,200\nSend t\nsleep,200\n)
-    f.write("Send /setblock 391 57 439 minecraft:powered_repeater 0\nsleep,200\nSend t\nsleep,200\n)
+    f.write("^r::\nSend t\nsleep,200\n")
+    f.write("Send /setblock 369 57 439 minecraft:powered_repeater 0 \nsleep,200\nSend t\nsleep,200\n")
+    f.write("Send /setblock 373 57 439 minecraft:powered_repeater 0 \nsleep,200\nSend t\nsleep,200\n")
+    f.write("Send /setblock 378 57 439 minecraft:powered_repeater 0 \nsleep,200\nSend t\nsleep,200\n")
+    f.write("Send /setblock 382 57 439 minecraft:powered_repeater 0\nsleep,200\nSend t\nsleep,200\n")
+    f.write("Send /setblock 387 57 439 minecraft:powered_repeater 0\nsleep,200\nSend t\nsleep,200\n")
+    f.write("Send /setblock 391 57 439 minecraft:powered_repeater 0\nsleep,200\nSend t\nsleep,200\n")
 print("Compiled to MC_Upload.ahk")
 #
 

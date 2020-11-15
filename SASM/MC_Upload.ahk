@@ -129,3 +129,30 @@ Send /setblock 444 58 508 minecraft:lever 14{Enter}
 sleep, 200
 Send t
 sleep, 200
+^r::
+Send t
+sleep,200
+Send /setblock 369 57 439 minecraft:powered_repeater 0 
+sleep,200
+Send t
+sleep,200
+Send /setblock 373 57 439 minecraft:powered_repeater 0 
+sleep,200
+Send t
+sleep,200
+Send /setblock 378 57 439 minecraft:powered_repeater 0 
+sleep,200
+Send t
+sleep,200
+Send /setblock 382 57 439 minecraft:powered_repeater 0
+sleep,200
+Send t
+sleep,200
+Send /setblock 387 57 439 minecraft:powered_repeater 0
+sleep,200
+Send t
+sleep,200
+Send /setblock 391 57 439 minecraft:powered_repeater 0
+sleep,200
+Send t
+sleep,200
