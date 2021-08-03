@@ -1,0 +1,38 @@
+STC 1110
+JBI #setup jump for future
+STC 0000
+SMA
+STC 0110 #Input 1 (N-1)
+MEN
+STC 0001
+SMA
+STC 1000 #Input 2
+MEN
+STC 0010
+SMA
+STC 0001
+MEN #Initalizisation
+STC 0001
+SMA
+MEO
+AIN
+STC 0010
+SMA
+MEO
+BIN
+SUM
+MEN #put accumulator in memory
+STC 0000
+SMA
+MEO
+AIN #retrives input 1
+STC 0001
+BIN
+SUB #subtracts 1 from input 1
+MEN
+SUB
+JPC #loops back to continue multiplying
+STC 0010
+SMA
+MEO
+DSP #displays output
