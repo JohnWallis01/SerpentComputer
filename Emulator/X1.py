@@ -24,7 +24,6 @@ def SUM():
         Flags[0] = 1
     else:
         Flags[0] = 0
-    print(RegA + RegB, "sum")
     return RegA + RegB
 
 def SUB():
@@ -154,5 +153,4 @@ def run():
         ModuleOutput = decode(instructions[Counter])
         Main_Reg = ModuleOutput
         executed += 1
-
 run()
