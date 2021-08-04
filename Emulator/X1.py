@@ -1,10 +1,20 @@
 import numpy as np
 import time as time
+import sys as sys
+#this function murders children
+import warnings
+warnings.filterwarnings("ignore")
+
 #reads the compiled binary
-progfile = input("run .\\")
-with open("..\\SASM\\"+progfile, "r") as f:
-    lines = f.read()
-instructions = lines.split()
+try:
+    f = open(sys.argv[1], 'r')
+    program = f.read()
+    f.close()
+except Exception as e:
+    print("Incorrect Input file was specified")
+    exit()
+
+instructions = program.split()
 
 #initialises the systems
 RegA = np.uint8(1)
@@ -84,7 +94,6 @@ def HLT():
     return 0
 
 def STC(constant):
-
      return np.uint8(int(constant, 2))
 def MEN():
     global RAM
@@ -99,13 +108,42 @@ def SMA():
     RamAddr = Main_Reg
     return np.uint8(0)
 
+def FLF():
+    return np.uint8(0)
 
+def FLT():
+    return np.unint8(255)
+
+def NOP():
+    return np.uint8(0)
+
+def Amm():
+    return RegA - np.uint8(1)
+
+def NTA():
+    return ~RegA
+
+def NTB():
+    return ~RegB
+
+def XOR():
+    return RegA^RegB
+
+def AND():
+    return RegA&RegB
+
+def ORR():
+    return RegA|RegB
+
+def LSH():
+    return RegA<<1
 #instruction decoders
 legacy_opcode = { "10101001":"JPE",
                   "10010110":"JPL",
                   "01010110":"JGE"}
 
-translator = {   "00000000": HLT,
+translator = {   "00000000": NOP,
+                 "10111111": HLT,
                  "10000000": AIN,
                  "10000001": BIN,
                  "10000010": JMP,
@@ -114,24 +152,25 @@ translator = {   "00000000": HLT,
                  "10000011": DSP,
                  "10000110": JBI,
 
-                 "11110011":"FLF",
-                 "11111100":"FLT",
+                 "11110011": FLF,
+                 "11111100": FLT,
                  "11001001": SUM,
                  "11010110": SUB,
                  "11111111": AOT,
                  "11111010": BOT,
-                 "11001111":"A--",
-                 "11110000":"NTA",
-                 "11111001":"XOR", #check logic functions
-                 "11111110":"AND",
-                 "11111011":"ORR",
-                 "11011100":"LSH",
+                 "11001111": Amm,
+                 "11110000": NTA,
+                 "11110101": NTB,
+                 "11111001": XOR, #check logic functions
+                 "11111110": AND,
+                 "11111011": ORR,
+                 "11011100": LSH,
 
-                "00110001":MEO,
-                "00110000":MEN,
-                "00100000":SMA}
+                 "00110001": MEO,
+                 "00110000": MEN,
+                 "00100000": SMA}
 
-literal_translator = {  "0001":STC}
+literal_translator = {  "0001": STC}
 
 def decode(instruction_byte):
     if instruction_byte in legacy_opcode.keys():
