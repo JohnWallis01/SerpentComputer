@@ -1,11 +1,11 @@
 import numpy as np
 import time as time
 import sys as sys
-#this function murders children
+# this function murders children
 import warnings
 warnings.filterwarnings("ignore")
 
-#reads the compiled binary
+# reads the compiled binary
 try:
     f = open(sys.argv[1], 'r')
     program = f.read()
@@ -16,17 +16,18 @@ except Exception as e:
 
 instructions = program.split()
 
-#initialises the systems
+# initialises the systems
 RegA = np.uint8(1)
 RegB = np.uint8(1)
 Main_Reg = np.uint8(0)
 Jump_Buffer = np.uint8(255)
-Counter = np.uint8(255) # will have to see about this one
+Counter = np.uint8(255)  # will have to see about this one
 RAM = np.zeros(256, dtype=np.uint8)
 RamAddr = np.uint8(0)
-Flags = [0,0]
+Flags = [0, 0]
 Halting = False
-#instructions
+# instructions
+
 
 def SUM():
     global Flags
@@ -36,6 +37,7 @@ def SUM():
         Flags[0] = 0
     return RegA + RegB
 
+
 def SUB():
     global Flags
     if RegA > RegB:
@@ -44,21 +46,26 @@ def SUB():
         Flags[0] = 0
     return RegA - RegB
 
+
 def AIN():
     global RegA
     RegA = Main_Reg
     return np.uint8(0)
 
+
 def AOT():
     return RegA
+
 
 def BIN():
     global RegB
     RegB = Main_Reg
     return np.uint8(0)
 
+
 def BOT():
     return RegB
+
 
 def DSP():
     print(Main_Reg)
@@ -70,16 +77,19 @@ def JBI():
     Jump_Buffer = Main_Reg
     return np.uint8(0)
 
+
 def JMP():
     global Counter
     Counter = Jump_Buffer
     return np.uint8(0)
+
 
 def JPE():
     global Counter
     if Flags[1] == 1:
         Counter = Jump_Buffer
     return np.uint8(0)
+
 
 def JPC():
     global Counter
@@ -93,84 +103,102 @@ def HLT():
     Halting = True
     return 0
 
+
 def STC(constant):
-     return np.uint8(int(constant, 2))
+    return np.uint8(int(constant, 2))
+
+
 def MEN():
     global RAM
     RAM[RamAddr] = Main_Reg
     return np.uint8(0)
 
+
 def MEO():
     return RAM[RamAddr]
+
 
 def SMA():
     global RamAddr
     RamAddr = Main_Reg
     return np.uint8(0)
 
+
 def FLF():
     return np.uint8(0)
+
 
 def FLT():
     return np.unint8(255)
 
+
 def NOP():
     return np.uint8(0)
+
 
 def Amm():
     return RegA - np.uint8(1)
 
+
 def NTA():
     return ~RegA
+
 
 def NTB():
     return ~RegB
 
+
 def XOR():
-    return RegA^RegB
+    return RegA ^ RegB
+
 
 def AND():
-    return RegA&RegB
+    return RegA & RegB
+
 
 def ORR():
-    return RegA|RegB
+    return RegA | RegB
+
 
 def LSH():
-    return RegA<<1
+    return RegA << 1
+
+
 #instruction decoders
-legacy_opcode = { "10101001":"JPE",
-                  "10010110":"JPL",
-                  "01010110":"JGE"}
+legacy_opcode = {"10101001": "JPE",
+                 "10010110": "JPL",
+                 "01010110": "JGE"}
 
-translator = {   "00000000": NOP,
-                 "10111111": HLT,
-                 "10000000": AIN,
-                 "10000001": BIN,
-                 "10000010": JMP,
-                 "10000101": JPE,
-                 "10000100": JPC,
-                 "10000011": DSP,
-                 "10000110": JBI,
+translator = {"00000000": NOP,
+              "10111111": HLT,
+              "10000000": AIN,
+              "10000001": BIN,
+              "10000010": JMP,
+              "10000101": JPE,
+              "10000100": JPC,
+              "10000011": DSP,
+              "10000110": JBI,
 
-                 "11110011": FLF,
-                 "11111100": FLT,
-                 "11001001": SUM,
-                 "11010110": SUB,
-                 "11111111": AOT,
-                 "11111010": BOT,
-                 "11001111": Amm,
-                 "11110000": NTA,
-                 "11110101": NTB,
-                 "11111001": XOR, #check logic functions
-                 "11111110": AND,
-                 "11111011": ORR,
-                 "11011100": LSH,
+              "11110011": FLF,
+              "11111100": FLT,
+              "11001001": SUM,
+              "11010110": SUB,
+              "11111111": AOT,
+              "11111010": BOT,
+              "11001111": Amm,
+              "11110000": NTA,
+              "11110101": NTB,
+              "11111001": XOR,  # check logic functions
+              "11111110": AND,
+              "11111011": ORR,
+              "11011100": LSH,
 
-                 "00110001": MEO,
-                 "00110000": MEN,
-                 "00100000": SMA}
+              "00110001": MEO,
+              "00110000": MEN,
+              "00100000": SMA}
 
-literal_translator = {  "0001": STC}
+literal_translator = {"0001": STC}
+
 
 def decode(instruction_byte):
     if instruction_byte in legacy_opcode.keys():
@@ -192,4 +220,6 @@ def run():
         ModuleOutput = decode(instructions[Counter])
         Main_Reg = ModuleOutput
         executed += 1
+
+
 run()
