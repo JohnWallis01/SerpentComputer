@@ -17,16 +17,16 @@ except Exception as e:
 instructions = program.split()
 
 # initialises the systems
-RegA = np.uint16(1)
-RegB = np.uint16(1)
-Main_Reg = np.uint16(0)
-Jump_Buffer = np.uint16(65535)
-Counter = np.uint16(65535)  # will have to see about this one
-RAM = np.zeros(65535, dtype=np.uint16)
-RamAddr = np.uint16(0)
+RegA = np.int16(1)
+RegB = np.int16(1)
+Main_Reg = np.int16(0)
+Jump_Buffer = np.int16(65535)
+Counter = np.int16(65535)  # will have to see about this one
+RAM = np.zeros(65535, dtype=np.int16)  # what if we put the code inside the ram
+RamAddr = np.int16(0)
 Flags = [0, 0]
 Halting = False
-Stack_Pointer = np.uint16(32767)
+Stack_Pointer = np.int16(-5000)
 # instructions
 
 
@@ -36,6 +36,7 @@ def SUM():
         Flags[0] = 1
     else:
         Flags[0] = 0
+    Flags[1] = 0
     return RegA + RegB
 
 
@@ -45,153 +46,195 @@ def SUB():
         Flags[0] = 1
     else:
         Flags[0] = 0
+    if RegA == RegB:
+        Flags[1] = 1
+    else:
+        Flags[1] = 0
     return RegA - RegB
 
 
 def AIN():
+    Reset_Flags()
     global RegA
     RegA = Main_Reg
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def AOT():
+    Reset_Flags()
     return RegA
 
 
 def BIN():
+    Reset_Flags()
     global RegB
     RegB = Main_Reg
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def BOT():
+    Reset_Flags()
     return RegB
 
 
 def DSP():
+    Reset_Flags()
     print(Main_Reg)
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def JBI():
+    Reset_Flags()
     global Jump_Buffer
     Jump_Buffer = Main_Reg
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def JMP():
+    Reset_Flags()
     global Counter
     Counter = Jump_Buffer
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def JPE():
     global Counter
     if Flags[1] == 1:
         Counter = Jump_Buffer
-    return np.uint16(0)
+    Reset_Flags()
+    return np.int16(0)
 
 
 def JPC():
     global Counter
     if Flags[0] == 1:
         Counter = Jump_Buffer
-    return np.uint16(0)
-
-
-def HLT():
-    global Halting
-    Halting = True
-    return 0
+    Reset_Flags()
+    return np.int16(0)
 
 
 def STC(constant):
-    return np.uint16(int(constant, 2))
+    Reset_Flags()
+    return np.int16(int(constant, 2))
 
 
 def MEN():
+    Reset_Flags()
     global RAM
     RAM[RamAddr] = Main_Reg
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def MEO():
+    Reset_Flags()
     return RAM[RamAddr]
 
 
 def SMA():
+    Reset_Flags()
     global RamAddr
     RamAddr = Main_Reg
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def FLF():
-    return np.uint16(0)
+    Reset_Flags()
+    return np.int16(0)
 
 
 def FLT():
+    Reset_Flags()
     return np.unint8(255)
 
 
 def NOP():
-    return np.uint16(0)
+    Reset_Flags()
+    return np.int16(0)
 
 
 def Amm():
-    return RegA - np.uint16(1)
+    global Flags
+    if RegA == np.int16(0):
+        Flags[1] = 1
+    else:
+        Flags[1] = 0
+    Flags[0] = 1
+    return RegA - np.int16(1)
 
 
 def NTA():
+    Reset_Flags()
     return ~RegA
 
 
 def NTB():
+    Reset_Flags()
     return ~RegB
 
 
 def XOR():
+    Reset_Flags()
     return RegA ^ RegB
 
 
 def AND():
+    Reset_Flags()
     return RegA & RegB
 
 
 def ORR():
+    Reset_Flags()
     return RegA | RegB
 
 
 def LSH():
+    Reset_Flags()
     return RegA << 1
 
 
 def STK():
+    Reset_Flags()
     global RAM
     global Stack_Pointer
     RAM[Stack_Pointer] = Main_Reg
-    Stack_Pointer += np.uint16(1)
-    return np.uint16(0)
+    Stack_Pointer += np.int16(1)
+    return np.int16(0)
 
 
 def USK():
+    Reset_Flags()
     global Stack_Pointer
-    Stack_Pointer -= np.uint16(1)
+    Stack_Pointer -= np.int16(1)
     return RAM[Stack_Pointer]
 
 
 def SSK():
+    Reset_Flags()
     global Stack_Pointer
     Stack_Pointer = Main_Reg
-    return np.uint16(0)
+    return np.int16(0)
 
 
 def RSK():
+    Reset_Flags()
     return Stack_Pointer
+
+
+def GPS():
+    Reset_Flags()
+    return Counter
+
+
+# other helpers
+
+def Reset_Flags():
+    global Flags
+    Flags[0] = 0
+    Flags[1] = 1
 
 
 # instruction decoders
 translator = {"0000000000000000": NOP,
-              "0000000010111111": HLT,
               "0000000010000000": AIN,
               "0000000010000001": BIN,
               "0000000010000010": JMP,
@@ -243,11 +286,12 @@ def run():
     global Main_Reg
     global Flags
     while not Halting:
-        Counter += np.uint16(1)
+        Counter += np.int16(1)
         ModuleOutput = decode(instructions[Counter])
         Main_Reg = ModuleOutput
+        # print(Counter, "c", "j", Jump_Buffer, "stk", RAM[Stack_Pointer-3:Stack_Pointer],"main", Main_Reg)
+        # time.sleep(0.02)
         executed += 1
-
         # try:
         #     print(
         #         Counter, translator[instructions[Counter]].__name__, Main_Reg, Flags)

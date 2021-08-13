@@ -1,0 +1,29 @@
+#ALTERNATIVE WAY TO DEAL WITH paramaters using a stack frame
+
+#calling the function
+AOT #saving the state of registers
+STK
+BOT
+STK
+STC R #return adddress
+STK #storing where we came from
+STC F #jumps to memory address where the function is stored
+JBI
+#Stack any parameters
+JMP
+
+#arrive at the function
+#USK any paramaters
+#do things
+USK
+JBI #get the return address
+#stack returns
+JMP
+
+#countinue
+#USK all the reutrn paramets
+USK #resetting the registers to the original state
+BIN
+USK
+AIN
+#done

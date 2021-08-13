@@ -1,0 +1,52 @@
+#if/else statement (equals):
+
+
+if something == 0:
+
+something on main:
+AIN
+STC T #true location
+JBI
+Amm
+JPE
+#does subroutine/else
+STC C #countinue
+JBI
+JMP
+#true
+#does subroutine true
+STC C
+JBI
+JMP
+
+if A == B:
+things in A and B
+STC T
+JBI
+SUB
+JPE
+#subroutine else
+STC C
+JBI
+JMP
+#true
+do subrountine true
+STC C
+JBI
+JMP
+
+if A > B:
+things in A and B
+STC T
+JBI
+SUB
+JPC
+#subroutine else
+STC C
+JBI
+JMP
+#true
+do subrountine true
+STC C
+JBI
+JMP

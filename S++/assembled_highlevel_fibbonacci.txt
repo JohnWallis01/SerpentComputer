@@ -1,0 +1,63 @@
+STC 6 #needed to move GPS to the address after the function call
+STK #storing where we came from
+STC 11 #jumps to memory address where the function is stored
+JBI
+STC 10
+STK
+JMP
+USK
+DSP
+STC 10
+JBI
+JMP
+USK #this is n #start of fibbonacci
+AIN
+STC 0
+BIN #setting up the compare
+STC 24 #this is the A>0 location
+JBI
+SUB
+JPC
+USK #this is the beginning of the false branch
+JBI #setting up the return address
+STC 1
+STK
+JMP
+STC 1 #start of true branch
+BIN
+AOT
+STK #saved the state of registers
+STC 35
+STK #storing where we came from
+STC 11 #jumps to memory address where the function is stored
+JBI
+SUB
+STK #stacked the parameter
+JMP #called the function
+USK
+BIN #put the return in B
+USK
+AIN #puts the original in A
+AOT #beginning the next function call
+STK
+BOT
+STK #saved the state of the registers
+STC 52
+STK
+STC 11
+JBI
+STC 2
+BIN
+SUB
+STK #stacking n-2
+JMP
+USK #return address
+AIN
+USK
+BIN
+USK #discarding a
+USK
+JBI
+SUM
+STK
+JMP
