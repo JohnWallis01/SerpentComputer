@@ -220,6 +220,8 @@ def run():
         ModuleOutput = decode(instructions[Counter])
         Main_Reg = ModuleOutput
         executed += 1
+        # print("c", Counter, "ins", instructions[Counter], "main", Main_Reg)
+        # time.sleep(0.2)
 
 
 run()

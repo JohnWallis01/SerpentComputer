@@ -32,7 +32,7 @@ Stack_Pointer = np.int16(-5000)
 
 def SUM():
     global Flags
-    if int(RegA) + int(RegB) > 65535:
+    if int(np.uint16(RegA)) + int(np.uint16(RegB)) > 65535:
         Flags[0] = 1
     else:
         Flags[0] = 0
