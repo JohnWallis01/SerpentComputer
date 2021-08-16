@@ -2,7 +2,7 @@ STC 6 #needed to move GPS to the address after the function call
 STK #storing where we came from
 STC 11 #jumps to memory address where the function is stored
 JBI
-STC 10
+STC 2
 STK
 JMP
 USK
