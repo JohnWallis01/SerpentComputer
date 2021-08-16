@@ -300,7 +300,7 @@ def run():
         instruct = '{0:{fill}{width}b}'.format((x + 2**n) % 2**n, fill='0', width=n)
         decode(instruct)
         executed += 1
-        # print("c", Counter, "ins", instruct, "main", Main_Reg)
+        # print("c", Counter, "ins", instruct, "main", Main_Reg, "mem addr", RamAddrLow, "value", RAM[RamAddrLow])
         # time.sleep(0.2)
 
 
