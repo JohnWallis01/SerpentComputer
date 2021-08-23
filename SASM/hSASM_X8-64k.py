@@ -67,6 +67,8 @@ def hex_format(item):
 with open('out.hex', 'w') as f:
     for item in assembled:
         f.write("%s" % hex_format(item))
+    f.write("\n")
+
 print("Compiled to out.hex")
 #
 
