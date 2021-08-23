@@ -6,15 +6,28 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # reads the compiled binary
-try:
+
+if sys.argv[1].split(".")[1] == "bin":
+    try:
+        f = open(sys.argv[1], 'r')
+        program = f.read()
+        f.close()
+        instructions = program.split()
+    except Exception as e:
+        print("Incorrect Input file was specified")
+        exit()
+if sys.argv[1].split(".")[1] =="hex":
     f = open(sys.argv[1], 'r')
     program = f.read()
     f.close()
-except Exception as e:
+    n = 2
+    hex = [program[i:i+n] for i in range(0, len(program), n)]
+    numerical = [(int(hexed,16)) for hexed in hex[0:-1]]
+    n = 8
+    instructions  = ['{0:{fill}{width}b}'.format((x + 2**n) % 2**n, fill='0', width=n) for x in numerical]
+else:
     print("Incorrect Input file was specified")
     exit()
-
-instructions = program.split()
 # initialises the systems
 RegA = np.int8(1)
 RegB = np.int8(1)
@@ -26,7 +39,7 @@ RAM = np.zeros(65535, dtype=np.int8)
 RamAddrLow = np.int8(0)
 RamAddrHigh = np.int8(0)
 Flags = [0, 0]
-Stack_Pointer = np.int16(-5000)
+Stack_Pointer = np.int16(65535)
 
 #put instrutions in memory
 index = 0
@@ -223,14 +236,14 @@ def STK():
     global RAM
     global Stack_Pointer
     RAM[Stack_Pointer] = Main_Reg
-    Stack_Pointer += np.int16(1)
+    Stack_Pointer -= np.int16(1)
 
 
 def USK():
     Reset_Flags()
     global Stack_Pointer
     global Main_Reg
-    Stack_Pointer -= np.int16(1)
+    Stack_Pointer += np.int16(1)
     Main_Reg = RAM[Stack_Pointer]
 
 
