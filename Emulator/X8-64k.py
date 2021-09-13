@@ -16,15 +16,16 @@ if sys.argv[1].split(".")[1] == "bin":
     except Exception as e:
         print("Incorrect Input file was specified")
         exit()
-if sys.argv[1].split(".")[1] =="hex":
+if sys.argv[1].split(".")[1] == "hex":
     f = open(sys.argv[1], 'r')
     program = f.read()
     f.close()
     n = 2
     hex = [program[i:i+n] for i in range(0, len(program), n)]
-    numerical = [(int(hexed,16)) for hexed in hex[0:-1]]
+    numerical = [(int(hexed, 16)) for hexed in hex[0:-1]]
     n = 8
-    instructions  = ['{0:{fill}{width}b}'.format((x + 2**n) % 2**n, fill='0', width=n) for x in numerical]
+    instructions = ['{0:{fill}{width}b}'.format(
+        (x + 2**n) % 2**n, fill='0', width=n) for x in numerical]
 else:
     print("Incorrect Input file was specified")
     exit()
@@ -44,15 +45,15 @@ Stack_Pointer = np.int16(65535)
 #put instrutions in memory
 index = 0
 for instruction in instructions:
-    instruct = np.int16(int(instruction,2))
+    instruct = np.int16(int(instruction, 2))
     RAM[index] = instruct
     index += 1
 
 #instruct helpers
 
-def Stitch(Low,High):
-    return np.int16(int(Low) + int(High)*2**8)
 
+def Stitch(Low, High):
+    return np.int16(int(Low) + int(High)*2**8)
 
 
 # instructions
@@ -79,7 +80,6 @@ def SUB():
     else:
         Flags[1] = 0
     Main_Reg = RegA - RegB
-
 
 
 def AIN():
@@ -175,8 +175,10 @@ def NOP():
     Reset_Flags()
     pass
 
+
 def Amm():
     global Flags
+    global Main_Reg
     if RegA == np.int8(0):
         Flags[1] = 1
     else:
@@ -220,10 +222,12 @@ def LSH():
     global Main_Reg
     Main_Reg = RegA << 1
 
+
 def SMAH():
     Reset_Flags()
     global RamAddrHigh
     RamAddrHigh = Main_Reg
+
 
 def JBHI():
     Reset_Flags()
@@ -249,7 +253,7 @@ def USK():
 
 #instruction decoders
 
-translator = {"11111111": NOP,
+translator = {"10111111": NOP,
               "10000000": AIN,
               "10000001": BIN,
               "10000010": JMP,
@@ -294,12 +298,12 @@ def Reset_Flags():
     Flags[1] = 1
 
 
-
 def decode(instruction_byte):
     if instruction_byte in translator.keys():
         return translator[instruction_byte]()
     else:
         return literal_translator[instruction_byte[0]](instruction_byte[1:8])
+
 
 def run():
     max_instructions = 1000
@@ -309,9 +313,10 @@ def run():
     global Flags
     while True:
         Counter += np.int8(1)
-        x= RAM[Counter]
+        x = RAM[Counter]
         n = 8
-        instruct = '{0:{fill}{width}b}'.format((x + 2**n) % 2**n, fill='0', width=n)
+        instruct = '{0:{fill}{width}b}'.format(
+            (x + 2**n) % 2**n, fill='0', width=n)
         decode(instruct)
         executed += 1
         # print("c", Counter, "ins", instruct, "main", Main_Reg, "mem addr", RamAddrLow, "value", RAM[RamAddrLow], "Flags", Flags)
