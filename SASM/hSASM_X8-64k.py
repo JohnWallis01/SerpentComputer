@@ -1,6 +1,6 @@
 import sys
 
-translator = {"NOP": "11111111",
+translator = {"NOP": "10111111",
               "AIN": "10000000",
               "BIN": "10000001",
               "JMP": "10000010",
@@ -8,7 +8,7 @@ translator = {"NOP": "11111111",
               "JPC": "10000100",
               "DSP": "10000011",
               "JBI": "10000110",
-             "JBHI": "10000111",
+              "JBHI": "10000111",
 
               "FLF": "11110011",
               "FLT": "11111100",
@@ -27,10 +27,10 @@ translator = {"NOP": "11111111",
               "MEO": "10110001",
               "MEN": "10110000",
               "SMA": "10100000",
-             "SMAH": "10100001",
+              "SMAH": "10100001",
 
-             "STK": "10110010",
-             "USK": "10110011",
+              "STK": "10110010",
+              "USK": "10110011",
 
               }
 
@@ -56,13 +56,15 @@ except:
     print(i)
     exit()
 
+
 def hex_format(item):
-    hexer = str(hex(int(item,2)))
-    hexer = hexer[2:len(str(hex(int(item,2))))]
+    hexer = str(hex(int(item, 2)))
+    hexer = hexer[2:len(str(hex(int(item, 2))))]
     if len(hexer) == 1:
         return "0" + hexer
     else:
         return hexer
+
 
 with open('out.hex', 'w') as f:
     for item in assembled:
