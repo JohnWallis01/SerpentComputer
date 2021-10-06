@@ -16,7 +16,7 @@ if sys.argv[1].split(".")[1] == "bin":
     except Exception as e:
         print("Incorrect Input file was specified")
         exit()
-if sys.argv[1].split(".")[1] == "hex":
+elif sys.argv[1].split(".")[1] == "hex":
     f = open(sys.argv[1], 'r')
     program = f.read()
     f.close()
