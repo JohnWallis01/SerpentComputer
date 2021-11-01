@@ -42,6 +42,7 @@ RamAddrHigh = np.int8(0)
 Flags = [0, 0]
 Stack_Pointer = np.int16(65535)
 
+
 #put instrutions in memory
 index = 0
 for instruction in instructions:
@@ -62,23 +63,19 @@ def SUM():
     global Main_Reg
     global Flags
     if int(np.uint8(RegA)) + int(np.uint8(RegB)) > 255:
-        Flags[0] = 1
-    else:
         Flags[0] = 0
+    else:
+        Flags[0] = 1
     Main_Reg = RegA + RegB
 
 
 def SUB():
     global Main_Reg
     global Flags
-    if RegA > RegB:
+    if RegB > RegA:
         Flags[0] = 1
     else:
         Flags[0] = 0
-    if RegA == RegB:
-        Flags[1] = 1
-    else:
-        Flags[1] = 0
     Main_Reg = RegA - RegB
 
 
@@ -250,6 +247,13 @@ def USK():
     Stack_Pointer += np.int16(1)
     Main_Reg = RAM[Stack_Pointer]
 
+def CMP():
+    global Main_Reg
+    Main_Reg = RegA - RegB - 1
+    if Reg == RegB:
+        Flags[1] = 1
+    else:
+        Flags[1] = 0
 
 #instruction decoders
 
@@ -276,6 +280,7 @@ translator = {"10111111": NOP,
               "11111110": AND,
               "11111011": ORR,
               "11011100": LSH,
+              "11000110": CMP,
 
               "10110001": MEO,
               "10110000": MEN,

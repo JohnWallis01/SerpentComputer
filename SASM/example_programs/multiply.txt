@@ -1,47 +1,39 @@
-STC 13
-JBI
-STC 2
-SMA
 STC 0
-MEN
+JBHI
 STC 0
-SMA
-STC 7 #A
-MEN
-STC 1
-SMA
-STC 8 #B
-MEN
-STC 1
-SMA
-MEO
-AIN
-STC 2
+SMAH #configure high registers
+STC 37 :Loop
 SMA
 MEO
 BIN
+STC 38
+SMA
+MEO
+AIN #add B to Accumulator
 SUM
-MEN
-STC 0
+MEN #store result
+STC 36
 SMA
 MEO
 AIN
-STC 1
-BIN
-SUB
-MEN
-SUB
-JPC
-STC 2
+AMM #deincrement A
+AIN
+STC 28
+JBI
+AMM #check if A is zero
+JPE
+AOT
+MEN #store lower A
+STC 3
+JBI
+JMP
+STC 38 :END
 SMA
 MEO
 DSP
-STC 15
-AIN
-STC 15
-BIN
-SUM
-AIN
-SUM
+STC 34
 JBI
-JMP
+JMP :HALT
+STC 7 #value of A (7bit) *A = 36
+STC 8 #value of B (7bit) *B = 37
+STC 0 #value of R         *R = 38
